@@ -1,16 +1,5 @@
 FROM clojure:lein-alpine
 
-RUN apk --no-cache add git
-
-RUN apk --no-cache add nodejs && npm update -g && npm cache clean
-
-WORKDIR /tmp
-RUN apk --no-cache add gcc ncurses-dev libc-dev readline-dev make \
-	&& wget https://github.com/hanslub42/rlwrap/releases/download/v0.43/rlwrap-0.43.tar.gz \
-	&& tar -xzvf rlwrap-0.43.tar.gz \
-	&& cd /tmp/rlwrap-0.43 \
-	&& ./configure \
-	&& make install \
-	&& cd / \
-	&& rm -rf /tmp/* \
-	&& apk del gcc ncurses-dev libc-dev readline-dev make
+RUN apk --no-cache add --update git
+RUN apk --no-cache add --update nodejs && npm i -g npm && npm cache clean --force
+RUN apk --no-cache add rlwrap --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
